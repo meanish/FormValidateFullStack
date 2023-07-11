@@ -1,13 +1,12 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017/blog", {
+mongoose.connect(process.env.MongoDB, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
     useUnifiedTopology: true,
 })
     .then(() => {
         console.log("connected to the db")
     })
     .catch(() => {
-        console.log("error");
+        console.log("error in connecting with dB");
     })
