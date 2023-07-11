@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 
-const UserRegisterController = require("../controllers/UserRegisterController")
+const UserRegisterController = require("../controllers/userRegisterController")
 
 
 
