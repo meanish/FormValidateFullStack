@@ -1,0 +1,10 @@
+npm init
+npm i express
+npm i mongoose
+npm i hbs // if use hbs
+npm i dotenv
+
+ "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/app.js -e js,hbs"
+  },
