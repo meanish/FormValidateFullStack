@@ -91,22 +91,7 @@ UserSchema.statics.validateRegister = async function (userData) {
 };
 
 
-//for token generation
-// UserSchema.methods.generateAuthToken = async function () {
-//     try {
-//
-//         const token = jwt.sign({ _id: this._id }, process.env.JWT_keyName)
-//
-//         this.tokens = this.tokens.concat({ token: token })  //placing token in token field    //concat to add the token for every action login register add cart
-//
-//
-//         await this.save(); //for db saving
-//         return token;
-//     }
-//     catch (e) {
-//         res.send("Error in making a token")
-//     }
-// }
+
 
 
 //before .save() we need to hash password

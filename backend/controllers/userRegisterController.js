@@ -1,4 +1,6 @@
 const userOriginal = require("../models/userRegister");
+const userTokenOriginal = require("../models/userTokens")
+
 
 module.exports = {
     AddUser: async (req, res, next) => {
@@ -19,10 +21,17 @@ module.exports = {
 
 
                 await registerData.save();
+
+                //save the user in token dB
+                const userTokenData = new userTokenOriginal({
+                    users: [registerData._id], // Associate the user with the user token
+                });
+
+                await userTokenData.save();
                 console.log('Saved user data:', registerData);
 
                 // console.log('Generated auth token:', registerData.authToken);
-                res.status(200).json({ registerData });
+                res.status(200).json({registerData});
                 // next();
             }
         } catch (err) {
