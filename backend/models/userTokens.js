@@ -40,4 +40,4 @@ UserTokenSchema.methods.generateAuthToken = async function () {
 
 const userTokenOriginal = new mongoose.model("userTokenOriginal", UserTokenSchema)
 
-module.exports = userTokens;
+module.exports = userTokenOriginal;
