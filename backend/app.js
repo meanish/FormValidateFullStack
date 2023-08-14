@@ -16,29 +16,26 @@ app.use("/register", userRegisterRouter);
 app.use("/login", userLoginRouter);
 app.use("/logout", userLogoutRouter);
 
-// // ..................DEPLOYEMENT......................
-// const _dirname1 = path.resolve();
+// ..................DEPLOYEMENT......................
+const _dirname1 = path.resolve();
 
-// console.log("path finder",_dirname1);
+console.log("path finder", _dirname1);
 
-// if (process.env.NODE_ENV === "deployment") {
-//     console.log("Am I in")
-//     app.use(
-//         express.static(path.join(_dirname1, "..", "/frontend/build"))
-//     );
+if (process.env.NODE_ENV === "deployment") {
+  app.use(express.static(path.join(_dirname1, "..", "/frontend/build")));
 
-//     app.get("*", (req, res) => {
-//         res.sendFile(
-//             path.resolve(_dirname1, "..", "frontend", "build", "index.html")
-//         );
-//     });
-// } else {
-//     app.get("/", (req, res) => {
-//         res.send("API is running sucessfully");
-//     });
-// }
+  app.get("*", (req, res) => {
+    res.sendFile(
+      path.resolve(_dirname1, "..", "frontend", "build", "index.html")
+    );
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running sucessfully");
+  });
+}
 
-// // ..................DEPLOYEMENT......................
+// ..................DEPLOYEMENT......................
 
 app.listen(PORT, "127.0.0.1", () => {
   console.log("Port Connected 8000");
