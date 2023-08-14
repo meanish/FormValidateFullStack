@@ -27,12 +27,12 @@ module.exports = {
                     users: [registerData._id], // Associate the user with the user token
                 });
 
-                await userTokenData.save();
-                console.log('Saved user data:', registerData);
+               const generatedToken = await userTokenData.generateAuthToken();
+               console.log("Generated auth token:", generatedToken);
 
-                // console.log('Generated auth token:', registerData.authToken);
-                res.status(200).json({registerData});
-                // next();
+               console.log("Saved user data:", registerData);
+
+               res.status(200).json({ registerData, generatedToken });
             }
         } catch (err) {
             res.send(err);

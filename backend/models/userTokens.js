@@ -1,43 +1,47 @@
-const mongoose = require("mongoose")
-const Validator = require("validatorjs")
-const jwt = require("jsonwebtoken")
-const bcrypt = require("bcryptjs")
+const mongoose = require("mongoose");
+const Validator = require("validatorjs");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
-const UserTokenSchema = new mongoose.Schema({
-
-    users: [{
+const UserTokenSchema = new mongoose.Schema(
+  {
+    users: [
+      {
         type: mongoose.Schema.Types.ObjectId,
         ref: "userOriginal",
-    }],
-    tokens: [{
+      },
+    ],
+    tokens: [
+      {
         token: {
-            type: String,
-            required: true,
+          type: String,
+          required: true,
         },
-
-    }]
-}, {
+      },
+    ],
+  },
+  {
     timestamps: true,
-})
-
+  }
+);
 
 // for token generation
 UserTokenSchema.methods.generateAuthToken = async function () {
-    try {
+  try {
+    const token = jwt.sign({ _id: this.users[0] }, process.env.JWT_keyName);
 
-        const token = jwt.sign({_id: this._id}, process.env.JWT_keyName)
+    this.tokens = this.tokens.concat({ token: token }); //placing token in token field    //concat to add the token for every action login register add cart
 
-        this.tokens = this.tokens.concat({token: token})  //placing token in token field    //concat to add the token for every action login register add cart
+    await this.save(); //for db saving
+    return token;
+  } catch (e) {
+    res.send("Error in making a token");
+  }
+};
 
-
-        await this.save(); //for db saving
-        return token;
-    } catch (e) {
-        res.send("Error in making a token")
-    }
-}
-
-
-const userTokenOriginal = new mongoose.model("userTokenOriginal", UserTokenSchema)
+const userTokenOriginal = new mongoose.model(
+  "userTokenOriginal",
+  UserTokenSchema
+);
 
 module.exports = userTokenOriginal;
