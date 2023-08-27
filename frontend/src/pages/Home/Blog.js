@@ -1,66 +1,62 @@
-import React, { useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, useParams } from "react-router-dom";
+import Navbar from "../Navbar";
+import DOMPurify from "dompurify";
+import { convertTimestamp } from "../../helper/Timeformat";
 
 const token = localStorage.getItem("authToken");
 
-const Blog = () => {
-  const navigate = useNavigate();
-
-  useEffect(
-    () => {
-      if (!token) {
-        navigate("/");
-      }
-    },
-    [],
-    [navigate]
-  );
-
-  const removeHandler = async () => {
-    try {
-      if (token) {
-        const config = {
-          headers: {
-            authorization: `Bearer ${token}`, //throws a token
-          },
+const Blog = ({ val }) => {
+  const { id } = useParams();
+  const [blogContent, setblogContent] = useState();
+  console.log(blogContent);
+  useEffect(() => {
+    const GetSingleBlog = async () => {
+      if (id) {
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         };
-        await axios.get("/logout", config);
-        localStorage.removeItem("authToken");
-        navigate("/");
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-  };
 
-  const removeAccHandler = async () => {
-    const confirmed = window.confirm(
-      "Are you sure you want to remove your account? This action cannot be undone."
-    );
+        const response = await fetch("/blog/singleblog", {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify({ id: id }),
+        });
 
-    if (confirmed) {
-      try {
-        const config = {
-          headers: {
-            authorization: `Bearer ${token}`, //throws a token
-          },
-        };
-        await axios.delete("/logout", config);
-        localStorage.removeItem("authToken");
-        navigate("/");
-      } catch (error) {
-        console.error("Error during account removal:", error);
+        const data = await response.json();
+        setblogContent(data);
       }
-    }
-  };
+    };
+    GetSingleBlog();
+  }, []);
 
   return (
-    <div>
-      <h1>Means youre loggin in the system</h1>
-      <button onClick={removeHandler}>Logout</button>
-      <button onClick={removeAccHandler}>Remove Account</button>
-    </div>
+    <>
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+
+        <div className="bg-navbar pt-5 flex-grow content px-32">
+          <div className="border shadow-lg p-4 bg-text rounded-lg">
+            <div className="goback">
+              <button>Go Back</button>
+            </div>
+            {blogContent && (
+              <>
+                <p>{blogContent.users[0].email}</p>
+                <div>{convertTimestamp(blogContent.createdAt)}</div>
+                <div
+                  className="ck-content"
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(blogContent.content),
+                  }}
+                />
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

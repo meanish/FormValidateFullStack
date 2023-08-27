@@ -1,0 +1,26 @@
+
+  import Cookies from "js-cookie";
+  // useEffect(() => {
+  //   setToken(localStorage.getItem("authToken"));
+  // }, []);
+
+  // useEffect(() => {
+  //   if (token) {
+  //     console.log(token);
+  //     Cookies.set("myblog", token, { expires: 7 }); // Expires in 7 days
+  //   }
+
+
+  // }, [token]);
+
+  const removeCookie = () => {
+    Cookies.remove("myblog");
+    alert("Removed");
+  };
+   <div>
+      <Navbar />
+      MyBlog
+      <p>
+        <button onClick={removeCookie}>Logout</button>
+      </p>
+    </div>

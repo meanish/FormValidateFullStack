@@ -18,15 +18,30 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav className="bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex-shrink-0">
-              <NavLink to="/" className="text-white text-lg font-semibold">
-                Logo
+      <nav
+        className="bg-sky relative"
+        style={{ boxShadow: "14px 6px 54px -8px #019B93", zIndex: "50" }}
+      >
+        <div className="px-4 md:px-3 sm:px-3 lg:px-32">
+          <div className="flex justify-between items-center py-5">
+            <div className="logo flex">
+              <NavLink to="/">
+                <p
+                  className="
+                  text-text
+                  font-logo
+                  text-4xl
+                  flex
+                  justify-center
+                  items-center
+                  font-extrabold
+                  "
+                >
+                  The BLOG
+                </p>
               </NavLink>
             </div>
-            <div className="hidden md:block">
+            <div className="content md:block">
               <div className="ml-10 flex items-baseline space-x-4">
                 <NavLink
                   to="/login"
@@ -47,15 +62,26 @@ const Navbar = () => {
                   Register
                 </NavLink>
                 {tokenava ? (
-                  <NavLink
-                    to="/blog"
-                    onClick={() => handleItemClick("Blog")}
-                    className={`nav-link ${
-                      activeItem === "Blog" ? "active" : ""
-                    }`}
-                  >
-                    Blog
-                  </NavLink>
+                  <>
+                    <NavLink
+                      to="/blog/create"
+                      onClick={() => handleItemClick("Blog")}
+                      className={`nav-link ${
+                        activeItem === "Blog" ? "active" : ""
+                      }`}
+                    >
+                      Create New
+                    </NavLink>
+
+                    <NavLink
+                      to="/myblog"
+                      className={`nav-link ${
+                        activeItem === "myBlog" ? "active" : ""
+                      }`}
+                    >
+                      My Blog
+                    </NavLink>
+                  </>
                 ) : (
                   []
                 )}

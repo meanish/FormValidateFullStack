@@ -2,19 +2,26 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 require("./src/dB/conn");
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8001;
+
 const path = require("path");
 
 const userRegisterRouter = require("./routes/userRegisterRouter");
 const userLoginRouter = require("./routes/userLoginRouter");
 const userLogoutRouter = require("./routes/userLogoutRouter");
+const imageRouter = require("./routes/imageRouter");
+const blogRouter = require("./routes/blogRouter");
 
 app.use(express.json()); //if we get json in return from file express handles in postman
 app.use(express.urlencoded({ extended: false })); //not only postman in live server too return json handles
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/register", userRegisterRouter);
 app.use("/login", userLoginRouter);
 app.use("/logout", userLogoutRouter);
+app.use("/imgupload", imageRouter); // POST endpoint for image uploads
+
+app.use("/blog", blogRouter);
 
 // ..................DEPLOYEMENT......................
 const _dirname1 = path.resolve();
