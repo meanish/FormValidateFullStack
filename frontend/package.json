@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://127.0.0.1:8000",
+  "proxy": "https://blog-2v1x.onrender.com",
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^6.1.0",
     "@emotion/react": "^11.11.1",
