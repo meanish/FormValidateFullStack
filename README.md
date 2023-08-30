@@ -1,2 +1,2 @@
-# FormValidateFullStack
-This is a simple form validation project that validates the form from backend and with no error register the user data in the database
+# The Blog
+This is blog site where authorized users can crate a blog using images,text with proper styling facilities and modify or even delete the crated own.
