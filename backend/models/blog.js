@@ -8,7 +8,9 @@ const blogSchema = new mongoose.Schema(
         ref: "userOriginal",
       },
     ],
-    content:String,
+    content: String,
+    title: String,
+    featured_image: String,
   },
   {
     timestamps: true,

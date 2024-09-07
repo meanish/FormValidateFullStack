@@ -5,14 +5,14 @@ import React from "react";
 import {
   extractFirstParagraph,
   extractFirstHeading,
-  extractFirstImage,
 } from "../../helper/Utils/ParagraphExtract";
 import BlogCard from "./Card";
 
 const BlogContentExtractor = ({ val }) => {
   const Paragraph = extractFirstParagraph(val);
   const Heading = extractFirstHeading(val);
-  const imgSrc = extractFirstImage(val);
+  const imgSrc = val.featured_image
+
 
   return (
     <div>

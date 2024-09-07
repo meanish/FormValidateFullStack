@@ -6,11 +6,18 @@ import Register from "./pages/Home/Register";
 import Blog from "./pages/Home/Blog";
 import MyBlog from "./pages/Home/MyBlog";
 import Update from "./pages/Home/Update";
+import Navbar from "./pages/Navbar";
+import "./index.css"
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App() {
   return (
     <div className="App">
+      <ToastContainer />
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />

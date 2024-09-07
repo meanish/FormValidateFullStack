@@ -1,67 +1,110 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import CardButton from "../../helper/Button";
+import { extractFirstHeading, extractFirstParagraph } from "../../helper/Utils/ParagraphExtract";
 
-const token = localStorage.getItem("authToken");
+const MyblogCard = ({ myBlogs: blogs }) => {
+  const token = localStorage.getItem("authToken");
 
-const MyblogCard = ({ Paragraph, Heading, Image, val }) => {
+  const [myBlogs, setMyBlogs] = useState(blogs);
+
+  useEffect(() => {
+    if (blogs) {
+      setMyBlogs(blogs)
+
+    }
+  }, [blogs])
+
+
+  // Delete handler to remove blog
   const deleteHandler = async (id) => {
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    };
+    const isConfirmed = window.confirm("Are you sure you want to delete this blog?");
+    if (!isConfirmed) return;
 
-    const response = await fetch("/blog/deleteblog", {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify({ contentId: id }),
-    });
-    if (response.ok) {
-      const responseData = await response.json(); // Parse JSON response
-      alert(responseData.message); // Display success message
-    } else {
-      const errorData = await response.json(); // Parse JSON error response
-      alert(errorData.error); // Display error message
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER}/blog/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        // Update the state by removing the deleted blog
+        setMyBlogs((prevBlogs) => prevBlogs.filter((blog) => blog._id !== id));
+        const responseData = await response.json();
+        alert(responseData.message);
+      } else {
+        const errorData = await response.json();
+        alert(errorData.error);
+      }
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+      alert("An error occurred while deleting the blog.");
     }
   };
-  return (
-    <div
-      className="rounded-lg sm:overflow-hidden my-12"
-      style={{
-        boxShadow: "17px 17px 2px -9px #019B93",
-      }}
-    >
-      <NavLink
-        to={`/blog/${val._id}`}
-        className="flex flex-col lg:flex-row md:flex-col  items-center bg-sky hover:bg-hoversky  w-full rounded-lg border-t border-orange"
-      >
-        <div className="lg:w-1/3 sm:w-auto md:w-full">
-          <img
-            className="object-cover w-full lg:h-64  h-auto md:rounded-l-lg"
-            src={Image}
-            alt="blog_image"
-          />
-        </div>
 
-        <div className="flex flex-col justify-between p-4 leading-normal lg:w-2/3 sm:w-full md:w-full">
-          <h5 className=" uppercase w-full overflow-hidden mb-2 sm:text-2xl font-bold font-head text-dark">
-            {Heading}
-          </h5>
-          <p className="my-7 text-md font-normal text-text tracking-tight overflow-hidden overflow-ellipsis truncate-multiline-3">
-            Here are the biggest enterprise technology acquisitions of 2021 so
-            far, in reverse chronological order.
-          </p>
-          <div className="button-section flex flex-col sm:flex-row md:flex-row gap-5 lg:w-1/2 justify-center sm:justify-start ">
-            <CardButton props="View" />
-            <CardButton props="Edit" />
-            <CardButton props="Delete" onClick={() => deleteHandler(val._id)} />
-          </div>
-        </div>
-      </NavLink>
+  if (!myBlogs || myBlogs.length === 0) {
+    return <p className="text-center text-gray-600 text-3xl">No blogs available.</p>;
+  }
+
+  return (
+    <div className="relative bg-white rounded-lg shadow-md my-6 mx-auto overflow-hidden">
+      <table className="w-full">
+        <thead>
+          <tr className="bg-gray-100 border-b border-gray-300">
+            <th className="p-4 text-left">Image</th>
+            <th className="p-4 text-left">Title</th>
+            <th className="p-4 text-left">Description</th>
+            <th className="p-4 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {myBlogs?.map((val) => {
+            const Paragraph = extractFirstParagraph(val);
+            const Heading = extractFirstHeading(val);
+            const { title, featured_image } = val;
+
+            return (
+              <tr key={val._id} className="">
+                <td className="p-4 w-1/4">
+                  <img
+                    className="object-cover w-32 h-32 rounded-lg transition-transform duration-500 hover:scale-110"
+                    src={featured_image}
+                    alt="blog_image"
+                  />
+                </td>
+
+                <td className="p-4 w-1/4">
+                  <h5 className="text-lg font-semibold text-gray-800 mb-2 truncate">{title || "NULL"}</h5>
+                </td>
+
+                <td className="p-4 w-1/2">
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">{Paragraph || "NULL"}</p>
+                </td>
+
+                <td className="p-4 w-1/4">
+                  <div className="flex gap-2 justify-center">
+                    <NavLink
+                      to={`/blog/update/${val._id}`}
+                      className="bg-yellow-500 text-blue-400 py-2 px-4 rounded-md shadow-md hover:bg-yellow-600 transition-colors duration-200"
+                    >
+                      Edit
+                    </NavLink>
+                    <button
+                      onClick={() => deleteHandler(val._id)}
+                      className="bg-red-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-red-600 transition-colors duration-200"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };
 
 export default MyblogCard;
-
-// mb-2 uppercase text-3xl font-bold font-head text-dark overflow-hidden overflow-ellipsis sm:text-2xl sm:w-10 xs:w-10 md:w-20 lg:w-20 border border-yellow

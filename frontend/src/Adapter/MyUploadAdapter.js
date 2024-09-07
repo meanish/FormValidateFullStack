@@ -15,7 +15,6 @@ class MyUploadAdapter {
         axios
           .post("/imgupload", formData)
           .then((response) => {
-            console.log("What is response", response.data);
             if (response.data && response.data.url) {
               resolve({ default: response.data.url });
             } else {

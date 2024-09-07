@@ -23,6 +23,9 @@ export const extractFirstParagraph = (val) => {
     if (text && text !== "\u00A0") {
       return text;
     }
+    else {
+      return null;
+    }
   }
   return "";
 };
@@ -47,5 +50,8 @@ export const extractFirstImage = (val) => {
   const image = extractImageSrcFromHTML(images[0].outerHTML);
   if (image) {
     return image;
+  }
+  else {
+    return null
   }
 };

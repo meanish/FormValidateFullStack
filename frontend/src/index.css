@@ -3,17 +3,15 @@
 @tailwind utilities;
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #3aafa9;
+  background-color: #bdcbcb;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 .nav-link {
   color: gray;
@@ -120,4 +118,57 @@ figure.snip1251.hover:after {
   -webkit-line-clamp: 3; /* Number of lines to show */
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.nav_link {
+  position: relative;
+  color: white;
+}
+
+.nav_link::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: white;
+  transition: width 0.3s ease-in-out;
+}
+
+.nav_link:hover::before {
+  width: 100%;
+}
+
+.nav-active {
+  color: white;
+  font-weight: bold;
+}
+
+.nav-active .nav-underline {
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: white;
+  transition: width 0.3s ease-in-out;
+}
+.nav_main {
+  background: linear-gradient(to right, #3b82f6, #4f46e5, #8b5cf6); /* from-blue-500 via-indigo-600 to-purple-700 */
+  background-color: #000; /* bg-black */
+  box-shadow:
+    0 10px 15px rgba(0, 0, 0, 0.3),
+    0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-lg */
+  transition:
+    background-color 0.5s ease-in-out,
+    box-shadow 0.5s ease-in-out;
+  padding: 10px 0;
+}
+.home_main {
+  background: linear-gradient(to bottom, #eff6ff, #dbeafe);
+}
+
+.blue_bg {
+  background: linear-gradient(to bottom, #ebf8ff, #dbeafe);
 }

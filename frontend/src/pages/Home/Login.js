@@ -1,42 +1,34 @@
 import React, { useState } from "react";
-import Navbar from "../Navbar";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
 
-  //login form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    //catching the data send from the backend
     try {
-      const response = await fetch("/login", {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       const data = await response.json();
-
       if (data.errors) {
         setErrors(data.errors);
-      } else if (!data.errors) {
-        if (data.token) {
-          const token = data.token;
-          localStorage.setItem("authToken", token);
-        } else {
-          // Handle the case where no token is returned
-          console.log("No token returned in the login response");
-        }
-        navigate("/blog");
+      } else if (data.token) {
+        localStorage.setItem("authToken", data.token);
+        navigate("/");
+        window.location.reload();
+
       }
     } catch (error) {
       console.log("Error in react", error);
@@ -44,73 +36,58 @@ const Login = () => {
   };
 
   return (
-    <>
-      <div className="login-page">
-        <Navbar />
-        <div className="login-form">
-          <div className="login-head">
-            <h1>Login Form</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-teal-500">
+      <div className="w-full max-w-lg p-8 bg-white rounded-lg shadow-lg">
+        <h2 className="text-3xl font-bold text-center text-purple-800 mb-6">Login to your account</h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
-          <div className="login-form-body">
-            <div className="flex items-center justify-center min-h-screen bg-gray-100">
-              <div className="w-96 p-6 bg-white rounded shadow-md">
-                <h2 className="text-2xl font-semibold mb-6 text-green-500">
-                  Login
-                </h2>
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-4">
-                    <label
-                      htmlFor="email"
-                      className="block text-gray-700 font-medium mb-2"
-                    >
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-                      placeholder="Enter your email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                    />
-                    <p className="danger text-red-500 text-xs mt-1">
-                      {errors.email}
-                    </p>
-                  </div>
-                  <div className="mb-4">
-                    <label
-                      htmlFor="password"
-                      className="block text-gray-700 font-medium mb-2"
-                    >
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      id="password"
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-                      placeholder="Enter your password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                    />
-                    <p className="danger text-red-500 text-xs mt-1">
-                      {errors.password}
-                    </p>
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200"
-                  >
-                    Login
-                  </button>
-                </form>
-              </div>
-            </div>
+
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
-        </div>
+
+          <button
+            type="submit"
+            className="w-full py-3 mt-4  py-4 text-xl text-purple-500 hover:bg-purple-500 hover:text-white  rounded-lg font-semibold shadow-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            Login
+          </button>
+        </form>
+
+        <p className="text-center text-sm text-gray-600 mt-6">
+          Don't have an account?{" "}
+          <a href="/register" className="text-black hover:underline">
+            Sign up
+          </a>
+        </p>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,59 +1,66 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
-import Navbar from "../Navbar";
+import { useParams } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { convertTimestamp } from "../../helper/Timeformat";
+import Navbar from "../Navbar";
 
 const token = localStorage.getItem("authToken");
 
-const Blog = ({ val }) => {
+const Blog = () => {
   const { id } = useParams();
-  const [blogContent, setblogContent] = useState();
-  console.log(blogContent);
+  const [blogContent, setBlogContent] = useState(null);
+
   useEffect(() => {
-    const GetSingleBlog = async () => {
+    const getSingleBlog = async () => {
       if (id) {
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        };
+        try {
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_SERVER}/blog/single/${id}`, {
+            method: "GET",
+          });
 
-        const response = await fetch("/blog/singleblog", {
-          method: "POST",
-          headers: headers,
-          body: JSON.stringify({ id: id }),
-        });
-
-        const data = await response.json();
-        setblogContent(data);
+          const { data } = await response.json();
+          setBlogContent(data);
+        } catch (error) {
+          console.error("Error fetching blog details:", error);
+        }
       }
     };
-    GetSingleBlog();
-  }, []);
+    getSingleBlog();
+  }, [id]);
 
   return (
     <>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
+      <div className="flex flex-col min-h-screen bg-gray-100">
+        <div className="container mx-auto px-4 py-12">
+          {blogContent && (
+            <div className="bg-white border min-h-screen border-gray-300 shadow-md rounded-lg p-6">
+              <header className="mb-16">
+                <h1 className="text-4xl font-bold  font-serif text-center text-red-600 mb-2">{blogContent.title}</h1>
+                <p className="text-gray-600 text-sm">
+                  <span>By {blogContent.users[0].email}</span> | <span>{convertTimestamp(blogContent.createdAt)}</span>
+                </p>
+              </header>
 
-        <div className="bg-navbar pt-5 flex-grow content px-32">
-          <div className="border shadow-lg p-4 bg-text rounded-lg">
-            <div className="goback">
-              <button>Go Back</button>
+              {/* Image Position */}
+              <div className="flex justify-center">
+                <figure className="mb-6">
+                  <img
+                    className="max-w-sm w-full h-auto object-cover rounded-lg"
+                    src={blogContent.featured_image}
+                    alt={blogContent.title}
+                  />
+                </figure>
+              </div>
+
+              {/* Article Content */}
+              <article
+                className="prose lg:prose-xl mt-16"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(blogContent.content),
+                }}
+              />
             </div>
-            {blogContent && (
-              <>
-                <p>{blogContent.users[0].email}</p>
-                <div>{convertTimestamp(blogContent.createdAt)}</div>
-                <div
-                  className="ck-content"
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(blogContent.content),
-                  }}
-                />
-              </>
-            )}
-          </div>
+          )}
         </div>
       </div>
     </>

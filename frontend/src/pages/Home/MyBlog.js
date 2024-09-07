@@ -12,6 +12,8 @@ const token = localStorage.getItem("authToken");
 
 const MyBlog = () => {
   const [myBlogs, setmyBlogs] = useState();
+
+
   useEffect(() => {
     const getmyBlogs = async () => {
       try {
@@ -21,8 +23,10 @@ const MyBlog = () => {
               authorization: `Bearer ${token}`, //throws a token
             },
           };
-          const response = await axios.get("/blog/myblog", config);
-          setmyBlogs(response.data);
+          const response = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER}/blog/myblog`, config);
+          const { data } = await response.data
+
+          setmyBlogs(data);
         }
       } catch (error) {
         console.error("Error during logout:", error);
@@ -31,27 +35,15 @@ const MyBlog = () => {
     getmyBlogs();
   }, []);
 
-  return (
-    <>
-      <Navbar />
-      <div className="lg:px-32 bg-sky  pt-14 sm:px-4 md:px-32">
-        {myBlogs &&
-          myBlogs.map((val) => {
-            const Paragraph = extractFirstParagraph(val);
-            const Heading = extractFirstHeading(val);
-            const imgSrc = extractFirstImage(val);
-            return (
-              <MyblogCard
-                Paragraph={Paragraph}
-                Heading={Heading}
-                Image={imgSrc}
-                val={val}
-              />
-            );
-          })}
-      </div>
-    </>
-  );
+  return <div className="container mx-auto ">
+    <div className="text-blue font-bold text-4xl my-10">My Blogs</div>
+
+    <MyblogCard
+      myBlogs={myBlogs}
+
+    />
+
+  </div>
 };
 
 export default MyBlog;
