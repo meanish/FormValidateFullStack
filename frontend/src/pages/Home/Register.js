@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,8 @@ const Register = () => {
     password_confirmation: "",
   });
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,7 +31,8 @@ const Register = () => {
       const data = await response.json();
 
       if (!data.errors) {
-        alert("Successfully Registered");
+        toast.success("Successfully Registered");
+        navigate("/login")
       } else if (data.errors) {
         setErrors(data.errors);
       }

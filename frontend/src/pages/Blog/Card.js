@@ -2,13 +2,27 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { convertTimestamp } from "../../helper/Timeformat";
 
+
+const getRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
 const BlogCard = ({ Paragraph, Image, val }) => {
+  const randomBgColor = getRandomColor();
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out">
       {/* Header */}
       <div className="flex items-center p-4 border-b border-gray-300">
         <div className="flex-shrink-0">
-          <div className="bg-gradient-to-r from-red-500 to-pink-500 rounded-full w-12 h-12 flex items-center justify-center text-white text-lg font-semibold">
+          <div
+            className="rounded-full w-12 h-12 flex items-center justify-center text-white text-lg font-semibold"
+            style={{ backgroundColor: randomBgColor }}
+          >
             {val.users[0].full_name.charAt(0)}
           </div>
         </div>
