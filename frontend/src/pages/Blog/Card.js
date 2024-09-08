@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { convertTimestamp } from "../../helper/Timeformat";
 
-const BlogCard = ({ Paragraph, Heading, Image, val }) => {
+const BlogCard = ({ Paragraph, Image, val }) => {
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out">
       {/* Header */}

@@ -46,21 +46,6 @@ const Navbar = () => {
     }
   };
 
-  const removeAccHandler = async () => {
-
-    try {
-      const config = {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      };
-      await axios.delete("/logout", config);
-      localStorage.removeItem("authToken");
-      navigate("/");
-    } catch (error) {
-      console.error("Error during account removal:", error);
-    }
-  };
 
   // Toggle profile dropdown
   const toggleProfileDropdown = () => {

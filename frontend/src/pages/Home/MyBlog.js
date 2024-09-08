@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../Navbar";
 import axios from "axios";
-import {
-  extractFirstHeading,
-  extractFirstImage,
-  extractFirstParagraph,
-} from "../../helper/Utils/ParagraphExtract";
+
 import MyblogCard from "../Myblog/Card";
 
 const token = localStorage.getItem("authToken");

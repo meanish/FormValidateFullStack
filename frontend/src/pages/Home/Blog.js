@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { convertTimestamp } from "../../helper/Timeformat";
-import Navbar from "../Navbar";
 
-const token = localStorage.getItem("authToken");
 
 const Blog = () => {
   const { id } = useParams();

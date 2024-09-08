@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { storeContent } from "../../store/slices/blogSlices";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import UploadForm from "../components/upload_form";
 
 const token = localStorage.getItem("authToken");
@@ -56,7 +56,7 @@ const Update = () => {
     };
 
     GetSingleBlog();
-  }, [id, token, navigate, dispatch]);
+  }, [id,  navigate, dispatch]);
 
   if (loading) {
     return <div>Loading...</div>;
