@@ -27,7 +27,7 @@ const Home = () => {
       <div className="container mx-auto min-h-screen px-8 py-12">
 
         <h1 className=" text-blue font-bold text-4xl mb-10">
-          Latest Blogs:
+          Latest Articles:
         </h1>
         <div className="allBlogs grid gap-10 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
           {allBlogs &&

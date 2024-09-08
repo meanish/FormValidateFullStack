@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { extractFirstHeading, extractFirstParagraph } from "../../helper/Utils/ParagraphExtract";
+import Logo from "../../images/bg.png"
+
 
 const MyblogCard = ({ myBlogs: blogs }) => {
   const token = localStorage.getItem("authToken");
@@ -69,7 +71,7 @@ const MyblogCard = ({ myBlogs: blogs }) => {
                 <td className="p-4 w-1/4">
                   <img
                     className="object-cover w-32 h-32 rounded-lg transition-transform duration-500 hover:scale-110"
-                    src={featured_image}
+                    src={featured_image || Logo}
                     alt="blog_image"
                   />
                 </td>

@@ -45,7 +45,7 @@ const BlogCard = ({ Paragraph, Image, val }) => {
         <h2 className="text-2xl font-bold text-gray-900 truncate">
           {val.title}
         </h2>
-        <p className="text-gray-700 mt-3 text-base leading-relaxed line-clamp-3">
+        <p className="text-gray-700 mt-3  h-12 text-base leading-relaxed line-clamp-2">
           {Paragraph}
         </p>
       </div>

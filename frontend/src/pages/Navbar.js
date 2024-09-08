@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import Logo from "../images/nobg.png";
+
 
 const Navbar = () => {
   const [activeItem, setActiveItem] = useState("");

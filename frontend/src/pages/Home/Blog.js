@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { convertTimestamp } from "../../helper/Timeformat";
-
+import Logo from "../../images/bg.png"
 
 const Blog = () => {
   const { id } = useParams();
@@ -44,7 +44,7 @@ const Blog = () => {
                 <figure className="mb-6">
                   <img
                     className="max-w-sm w-full h-auto object-cover rounded-lg"
-                    src={blogContent.featured_image}
+                    src={blogContent.featured_image || Logo}
                     alt={blogContent.title}
                   />
                 </figure>
