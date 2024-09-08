@@ -22,10 +22,14 @@ const Login = () => {
       });
 
       const data = await response.json();
+
+      console.log("Data", data)
+
+
       if (data.errors) {
         setErrors(data.errors);
-      } else if (data.token) {
-        localStorage.setItem("authToken", data.token);
+      } else if (data.token || data.user) {
+        localStorage.setItem("authToken", data?.token);
         navigate("/");
         window.location.reload();
 
