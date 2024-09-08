@@ -23,9 +23,6 @@ const Login = () => {
 
       const data = await response.json();
 
-      console.log("Data", data)
-
-
       if (data.errors) {
         setErrors(data.errors);
       } else if (data.token || data.user) {
